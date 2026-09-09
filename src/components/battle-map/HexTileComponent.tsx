@@ -29,6 +29,27 @@ const OWNER_COLORS: Record<Owner, { fill: string; stroke: string; text: string }
   },
 }
 
+function getHexGradientFill(
+  primaryOwner: Owner,
+  overlappingOwners?: Owner[]
+): string | null {
+  if (!overlappingOwners || overlappingOwners.length === 0) return null
+  const allOwners = new Set([primaryOwner, ...overlappingOwners])
+  if (allOwners.has('Us') && allOwners.has('Competitor A') && allOwners.has('Competitor B')) {
+    return 'url(#overlap-all)'
+  }
+  if (allOwners.has('Us') && allOwners.has('Competitor A')) {
+    return 'url(#overlap-us-compa)'
+  }
+  if (allOwners.has('Us') && allOwners.has('Competitor B')) {
+    return 'url(#overlap-us-compb)'
+  }
+  if (allOwners.has('Competitor A') && allOwners.has('Competitor B')) {
+    return 'url(#overlap-compa-compb)'
+  }
+  return null
+}
+
 export const HexTileComponent: React.FC<HexTileComponentProps> = memo(
   ({ hex, isSelected, isHighlighted, isDimmed, onClick, onHover, onLeave }) => {
     const ownerStyle = OWNER_COLORS[hex.owner] || {
@@ -38,10 +59,13 @@ export const HexTileComponent: React.FC<HexTileComponentProps> = memo(
     }
 
     const isRumored = hex.confidence === 'Rumored'
+    const isOverlapped = Boolean(hex.overlappingOwners && hex.overlappingOwners.length > 0)
+    const gradientFill = getHexGradientFill(hex.owner, hex.overlappingOwners)
+    const hexFill = gradientFill || ownerStyle.fill
 
     // Compute stroke, fill-opacity, and classes according to Fog of War & Selection
-    let strokeColor = ownerStyle.stroke
-    let strokeWidth = 1.5
+    let strokeColor = isOverlapped ? '#38bdf8' : ownerStyle.stroke
+    let strokeWidth = isOverlapped ? 2 : 1.5
     let strokeDasharray = isRumored ? '4 3' : 'none'
     let fillOpacity = isRumored ? 0.5 : 0.85
     let groupOpacity = 1
@@ -88,7 +112,7 @@ export const HexTileComponent: React.FC<HexTileComponentProps> = memo(
         <polygon
           points={hex.polygonPoints}
           transform={`translate(${-hex.x}, ${-hex.y})`}
-          fill={ownerStyle.fill}
+          fill={hexFill}
           fillOpacity={fillOpacity}
           stroke={strokeColor}
           strokeWidth={strokeWidth}
@@ -109,7 +133,7 @@ export const HexTileComponent: React.FC<HexTileComponentProps> = memo(
         </text>
 
         {/* Associated Epic Pill inside Hexagon */}
-        <g transform="translate(0, 8)" className="pointer-events-none">
+        <g transform="translate(0, 7)" className="pointer-events-none">
           <rect
             x={-30}
             y={-7}
@@ -131,10 +155,35 @@ export const HexTileComponent: React.FC<HexTileComponentProps> = memo(
           </text>
         </g>
 
-        {/* Rumored Fog of War Indicator Icon (small radar / eye indicator) */}
-        {isRumored && (
+        {/* Feature Overlap Indicator (when shared between Us and competitors) */}
+        {isOverlapped && (
+          <g transform="translate(0, 22)" className="pointer-events-none">
+            <rect
+              x={-28}
+              y={-5}
+              width={56}
+              height={10}
+              rx={2}
+              fill="#0284c7"
+              fillOpacity={0.8}
+            />
+            <text
+              y={3}
+              textAnchor="middle"
+              fill="#e0f2fe"
+              fontSize={7}
+              fontWeight={700}
+              className="tracking-wider uppercase font-mono"
+            >
+              OVERLAP
+            </text>
+          </g>
+        )}
+
+        {/* Rumored Fog of War Indicator */}
+        {isRumored && !isOverlapped && (
           <text
-            y={24}
+            y={23}
             textAnchor="middle"
             fill="#fef08a"
             fontSize={8}

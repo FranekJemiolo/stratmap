@@ -180,5 +180,98 @@ describe('BattleMapPane Component', () => {
     fireEvent.click(container)
     expect(handleClearSelection).toHaveBeenCalledTimes(1)
   })
+
+  it('renders overlapping hex with split gradient fill and OVERLAP badge', () => {
+    const overlappingHex: RawHexTile = {
+      hexId: 'HEX-01',
+      label: 'Identity Federation',
+      q: 0,
+      r: 0,
+      clusterName: 'Identity & Access',
+      associatedEpicId: 'PROJ-101',
+      owner: 'Us',
+      status: 'Captured',
+      confidence: 'Confirmed',
+      overlappingOwners: ['Competitor A'],
+    }
+
+    const { tiles } = calculateHexLayout([overlappingHex])
+    const hex = tiles[0]
+
+    const { container } = render(
+      <svg>
+        <HexTileComponent
+          hex={hex}
+          isSelected={false}
+          isHighlighted={false}
+          isDimmed={false}
+          onClick={vi.fn()}
+          onHover={vi.fn()}
+          onLeave={vi.fn()}
+        />
+      </svg>
+    )
+
+    expect(screen.getByText('OVERLAP')).toBeInTheDocument()
+    const polygon = container.querySelector('polygon')
+    expect(polygon?.getAttribute('fill')).toBe('url(#overlap-us-compa)')
+  })
+
+  it('dims non-overlapping hexes when showOverlapOnly is active', () => {
+    const overlappingHex: RawHexTile = {
+      hexId: 'HEX-01',
+      label: 'Identity Federation',
+      q: 0,
+      r: 0,
+      clusterName: 'Identity & Access',
+      associatedEpicId: 'PROJ-101',
+      owner: 'Us',
+      status: 'Captured',
+      confidence: 'Confirmed',
+      overlappingOwners: ['Competitor A'],
+    }
+
+    const exclusiveHex: RawHexTile = {
+      hexId: 'HEX-02',
+      label: 'MFA & Passwordless',
+      q: 1,
+      r: -1,
+      clusterName: 'Identity & Access',
+      associatedEpicId: 'PROJ-101',
+      owner: 'Us',
+      status: 'Captured',
+      confidence: 'Confirmed',
+    }
+
+    const { tiles, bounds } = calculateHexLayout([overlappingHex, exclusiveHex])
+    const handleToggle = vi.fn()
+
+    render(
+      <BattleMapPane
+        tiles={tiles}
+        bounds={bounds}
+        selectedHexId={null}
+        selectedEpicId={null}
+        showOverlapOnly={true}
+        onToggleOverlapOnly={handleToggle}
+        onSelectHex={vi.fn()}
+        onClearSelection={vi.fn()}
+      />
+    )
+
+    // Overlapping hex should NOT be dimmed
+    const overlapTile = screen.getByTestId('hex-tile-HEX-01')
+    expect(overlapTile.getAttribute('opacity')).toBe('1')
+
+    // Exclusive hex SHOULD be dimmed
+    const exclusiveTile = screen.getByTestId('hex-tile-HEX-02')
+    expect(exclusiveTile.getAttribute('opacity')).toBe('0.22')
+
+    // Test toggle button click
+    const toggleBtn = screen.getByLabelText('Toggle Feature Overlap')
+    fireEvent.click(toggleBtn)
+    expect(handleToggle).toHaveBeenCalledTimes(1)
+  })
 })
+
 

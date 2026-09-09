@@ -6,12 +6,14 @@ interface StratMapState {
   selectedEpicId: string | null
   selectedHexId: string | null
   highlightedEpicId: string | null
+  showOverlapOnly: boolean
 
   // Actions
   setDataset: (dataset: DatasetView) => void
   selectHex: (hexId: string, associatedEpicId: string) => void
   selectEpic: (epicId: string | null) => void
   clearSelection: () => void
+  toggleOverlapOnly: () => void
 }
 
 export const useStratMapStore = create<StratMapState>((set) => ({
@@ -19,6 +21,12 @@ export const useStratMapStore = create<StratMapState>((set) => ({
   selectedEpicId: null,
   selectedHexId: null,
   highlightedEpicId: null,
+  showOverlapOnly: false,
+
+  toggleOverlapOnly: () =>
+    set((state) => ({
+      showOverlapOnly: !state.showOverlapOnly,
+    })),
 
   setDataset: (dataset: DatasetView) =>
     set({

@@ -8,7 +8,8 @@
     "associatedEpicId": "PROJ-101",
     "owner": "Us",
     "status": "Captured",
-    "confidence": "Confirmed"
+    "confidence": "Confirmed",
+    "overlappingOwners": ["Competitor A"]
   },
   {
     "hexId": "SEG-02",

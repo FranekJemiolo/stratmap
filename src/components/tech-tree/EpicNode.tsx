@@ -72,11 +72,19 @@ export const EpicNode: React.FC<NodeProps<EpicFlowNode>> = memo(({ data }) => {
 
       {/* Epic Title */}
       <h4
-        className="text-xs font-semibold text-slate-900 line-clamp-2 leading-snug mb-3"
+        className="text-xs font-semibold text-slate-900 line-clamp-2 leading-snug mb-2"
         title={data.label}
       >
         {data.label}
       </h4>
+
+      {/* Market Parity / Competitor Overlap Indicator */}
+      {data.overlappingCompetitors && data.overlappingCompetitors.length > 0 && (
+        <div className="mb-2.5 flex items-center gap-1 px-2 py-0.5 rounded-sm bg-sky-50 border border-sky-200/80 text-[10px] text-sky-800">
+          <span className="font-semibold text-sky-700">Parity:</span>
+          <span className="truncate">Shared with {data.overlappingCompetitors.join(', ')}</span>
+        </div>
+      )}
 
       {/* Progress Bar and % */}
       <div className="space-y-1 mb-2">

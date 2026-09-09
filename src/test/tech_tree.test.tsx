@@ -118,4 +118,15 @@ describe('EpicNode Component', () => {
     renderWithProvider(<EpicNode {...props} />)
     expect(screen.getByText('3 territories')).toBeInTheDocument()
   })
+
+  it('renders market parity badge when overlappingCompetitors are present', () => {
+    const props = createMockNodeProps({
+      overlappingCompetitors: ['Competitor A'],
+    })
+
+    renderWithProvider(<EpicNode {...props} />)
+    expect(screen.getByText('Parity:')).toBeInTheDocument()
+    expect(screen.getByText('Shared with Competitor A')).toBeInTheDocument()
+  })
 })
+

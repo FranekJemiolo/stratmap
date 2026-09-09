@@ -25,6 +25,7 @@ export interface RawHexTile {
   owner: Owner
   status: HexStatus
   confidence: Confidence
+  overlappingOwners?: Owner[] // Other owners who also possess this capability
 }
 
 export interface EpicNodeData extends Record<string, unknown> {
@@ -38,6 +39,7 @@ export interface EpicNodeData extends Record<string, unknown> {
   isDimmed?: boolean
   isSelected?: boolean
   linkedHexCount?: number
+  overlappingCompetitors?: Owner[] // Competitors who also share features in this Epic
 }
 
 export type EpicFlowNode = Node<EpicNodeData, 'epic'>

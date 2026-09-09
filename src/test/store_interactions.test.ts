@@ -60,4 +60,16 @@ describe('useStratMapStore & Cross-Pane State Management', () => {
     expect(updated.selectedEpicId).toBeNull()
     expect(updated.highlightedEpicId).toBeNull()
   })
+
+  it('toggleOverlapOnly toggles showOverlapOnly boolean flag', () => {
+    const store = useStratMapStore.getState()
+    expect(store.showOverlapOnly).toBe(false)
+
+    store.toggleOverlapOnly()
+    expect(useStratMapStore.getState().showOverlapOnly).toBe(true)
+
+    store.toggleOverlapOnly()
+    expect(useStratMapStore.getState().showOverlapOnly).toBe(false)
+  })
 })
+

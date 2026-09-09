@@ -13,7 +13,7 @@ import {
 import '@xyflow/react/dist/style.css'
 
 import { EpicNode } from './EpicNode'
-import type { EpicFlowNode, EpicFlowEdge } from '../../types'
+import type { EpicFlowNode, EpicFlowEdge, Owner } from '../../types'
 import { GitBranch } from 'lucide-react'
 
 const nodeTypes = {
@@ -27,6 +27,7 @@ interface TechTreePaneProps {
   highlightedEpicId: string | null
   onSelectEpic: (epicId: string | null) => void
   linkedHexCounts?: Record<string, number>
+  epicOverlaps?: Record<string, Owner[]>
 }
 
 const TechTreeContent: React.FC<TechTreePaneProps> = ({
@@ -36,6 +37,7 @@ const TechTreeContent: React.FC<TechTreePaneProps> = ({
   highlightedEpicId,
   onSelectEpic,
   linkedHexCounts = {},
+  epicOverlaps = {},
 }) => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
   const [edges, , onEdgesChange] = useEdgesState(initialEdges)
@@ -51,6 +53,7 @@ const TechTreeContent: React.FC<TechTreePaneProps> = ({
         const isHighlighted = highlightedEpicId === node.id
         const isDimmed = activeTargetId !== null && !isSelected && !isHighlighted
         const count = linkedHexCounts[node.id] ?? 0
+        const overlaps = epicOverlaps[node.id]
 
         return {
           ...node,
@@ -60,11 +63,12 @@ const TechTreeContent: React.FC<TechTreePaneProps> = ({
             isHighlighted,
             isDimmed,
             linkedHexCount: count,
+            overlappingCompetitors: overlaps,
           },
         }
       })
     )
-  }, [selectedEpicId, highlightedEpicId, linkedHexCounts, setNodes])
+  }, [selectedEpicId, highlightedEpicId, linkedHexCounts, epicOverlaps, setNodes])
 
   // Center on selected epic when selectedEpicId changes
   useEffect(() => {

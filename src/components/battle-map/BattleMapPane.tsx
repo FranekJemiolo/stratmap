@@ -11,6 +11,8 @@ import {
   Eye,
   CheckCircle,
   HelpCircle,
+  Layers,
+  Sparkles,
 } from 'lucide-react'
 
 interface BattleMapPaneProps {
@@ -18,6 +20,8 @@ interface BattleMapPaneProps {
   bounds: { minX: number; maxX: number; minY: number; maxY: number; width: number; height: number }
   selectedHexId: string | null
   selectedEpicId: string | null
+  showOverlapOnly?: boolean
+  onToggleOverlapOnly?: () => void
   onSelectHex: (hexId: string, associatedEpicId: string) => void
   onClearSelection: () => void
 }
@@ -33,6 +37,8 @@ export const BattleMapPane: React.FC<BattleMapPaneProps> = ({
   bounds,
   selectedHexId,
   selectedEpicId,
+  showOverlapOnly = false,
+  onToggleOverlapOnly,
   onSelectHex,
   onClearSelection,
 }) => {
@@ -145,11 +151,13 @@ export const BattleMapPane: React.FC<BattleMapPaneProps> = ({
   const territoryCounts = React.useMemo(() => {
     const counts: Record<Owner, number> = { Us: 0, 'Competitor A': 0, 'Competitor B': 0 }
     let rumored = 0
+    let overlapped = 0
     tiles.forEach((t) => {
       if (counts[t.owner] !== undefined) counts[t.owner]++
       if (t.confidence === 'Rumored') rumored++
+      if (t.overlappingOwners && t.overlappingOwners.length > 0) overlapped++
     })
-    return { ...counts, rumored, total: tiles.length }
+    return { ...counts, rumored, overlapped, total: tiles.length }
   }, [tiles])
 
   return (
@@ -168,13 +176,34 @@ export const BattleMapPane: React.FC<BattleMapPaneProps> = ({
               </span>
             </div>
             <p className="text-[11px] text-slate-400">
-              {territoryCounts.total} Market Sectors · {territoryCounts.rumored} in Fog of War
+              {territoryCounts.total} Market Sectors · {territoryCounts.overlapped} Overlapped ·{' '}
+              {territoryCounts.rumored} in Fog of War
             </p>
           </div>
         </div>
 
-        {/* Legend */}
+        {/* Legend & Overlap Spotlight Toggle */}
         <div className="flex flex-wrap items-center gap-3 text-[11px]">
+          {onToggleOverlapOnly && (
+            <button
+              type="button"
+              aria-label="Toggle Feature Overlap"
+              onClick={(e) => {
+                e.stopPropagation()
+                onToggleOverlapOnly()
+              }}
+              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium border transition-all cursor-pointer ${
+                showOverlapOnly
+                  ? 'bg-sky-600 text-white border-sky-400 shadow-sm shadow-sky-500/30 ring-1 ring-sky-400'
+                  : 'bg-slate-800/90 text-slate-300 hover:text-white border-slate-700 hover:border-slate-600'
+              }`}
+              title="Filter to spotlight features overlapped by both Us and competitors"
+            >
+              <Layers className="w-3.5 h-3.5 text-sky-400" />
+              <span>Feature Overlap ({territoryCounts.overlapped})</span>
+            </button>
+          )}
+
           <span className="flex items-center gap-1.5 text-slate-300">
             <span className="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block shadow-sm" />
             <span>Us ({territoryCounts.Us})</span>
@@ -189,7 +218,7 @@ export const BattleMapPane: React.FC<BattleMapPaneProps> = ({
           </span>
           <span className="flex items-center gap-1.5 text-amber-300/90 pl-1 border-l border-slate-700">
             <span className="w-3 h-2 border border-dashed border-amber-400 bg-amber-400/30 rounded-xs inline-block" />
-            <span>Fog of War (Rumored)</span>
+            <span>Fog of War</span>
           </span>
         </div>
       </div>
@@ -226,18 +255,47 @@ export const BattleMapPane: React.FC<BattleMapPaneProps> = ({
             touchAction: 'none',
           }}
         >
+          <defs>
+            {/* Split diagonal gradient: Us (Blue) + Competitor A (Orange) */}
+            <linearGradient id="overlap-us-compa" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="49%" stopColor="#2563eb" />
+              <stop offset="50%" stopColor="#ea580c" />
+            </linearGradient>
+
+            {/* Split diagonal gradient: Us (Blue) + Competitor B (Violet) */}
+            <linearGradient id="overlap-us-compb" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="49%" stopColor="#2563eb" />
+              <stop offset="50%" stopColor="#7c3aed" />
+            </linearGradient>
+
+            {/* Split diagonal gradient: Competitor A + Competitor B */}
+            <linearGradient id="overlap-compa-compb" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="49%" stopColor="#ea580c" />
+              <stop offset="50%" stopColor="#7c3aed" />
+            </linearGradient>
+
+            {/* Tri-split gradient: Us + Competitor A + Competitor B */}
+            <linearGradient id="overlap-all" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="32%" stopColor="#2563eb" />
+              <stop offset="33%" stopColor="#ea580c" />
+              <stop offset="66%" stopColor="#ea580c" />
+              <stop offset="67%" stopColor="#7c3aed" />
+            </linearGradient>
+          </defs>
+
           <g
             transform={`translate(${transform.x}, ${transform.y}) scale(${transform.scale})`}
             className="transition-transform duration-75 ease-out"
           >
             {tiles.map((hex) => {
               const isSelected = selectedHexId === hex.hexId
-              // Highlighted if user clicked this hex OR clicked the associated Epic in tech tree!
               const isHighlighted =
                 Boolean(selectedEpicId) && hex.associatedEpicId === selectedEpicId && !isSelected
-              // Dimmed if an active selection exists and this hex doesn't match
+              const isOverlapped = Boolean(hex.overlappingOwners && hex.overlappingOwners.length > 0)
               const hasActiveSelection = Boolean(selectedHexId || selectedEpicId)
-              const isDimmed = hasActiveSelection && !isSelected && !isHighlighted
+              const isDimmed =
+                (hasActiveSelection && !isSelected && !isHighlighted) ||
+                (showOverlapOnly && !isOverlapped)
 
               return (
                 <HexTileComponent
@@ -351,6 +409,18 @@ export const BattleMapPane: React.FC<BattleMapPaneProps> = ({
                   {tooltip.hex.confidence}
                 </span>
               </div>
+
+              {/* Overlap & Parity Analysis */}
+              {tooltip.hex.overlappingOwners && tooltip.hex.overlappingOwners.length > 0 && (
+                <div className="flex items-start justify-between gap-1 pt-1.5 border-t border-slate-800/80 bg-sky-950/40 p-1.5 rounded border border-sky-500/20">
+                  <span className="text-sky-400 font-semibold flex items-center gap-1 shrink-0">
+                    <Sparkles className="w-3 h-3 text-sky-400" /> Market Overlap:
+                  </span>
+                  <span className="text-sky-200 font-medium text-right">
+                    Shared with {tooltip.hex.overlappingOwners.join(', ')}
+                  </span>
+                </div>
+              )}
 
               <div className="flex items-center justify-between pt-1 border-t border-slate-800/80">
                 <span className="text-slate-400">Associated Jira Epic:</span>

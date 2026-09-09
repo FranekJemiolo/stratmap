@@ -17,10 +17,12 @@ export function App() {
     selectedEpicId,
     selectedHexId,
     highlightedEpicId,
+    showOverlapOnly,
     setDataset,
     selectHex,
     selectEpic,
     clearSelection,
+    toggleOverlapOnly,
   } = useStratMapStore()
 
   // 1. Prepare Tech Tree DAG nodes & edges (hierarchical layout)
@@ -39,13 +41,31 @@ export function App() {
     return calculateHexLayout(rawHexData, 54)
   }, [rawHexData])
 
-  // 4. Compute linked hex counts for each Epic
-  const linkedHexCounts = useMemo(() => {
+  // 4. Compute linked hex counts and competitor overlaps for each Epic
+  const { linkedHexCounts, epicOverlaps } = useMemo(() => {
     const counts: Record<string, number> = {}
+    const overlapMap: Record<string, Set<string>> = {}
+
     rawHexData.forEach((hex) => {
       counts[hex.associatedEpicId] = (counts[hex.associatedEpicId] || 0) + 1
+
+      if (hex.overlappingOwners && hex.overlappingOwners.length > 0) {
+        if (!overlapMap[hex.associatedEpicId]) overlapMap[hex.associatedEpicId] = new Set()
+        hex.overlappingOwners.forEach((owner) => {
+          if (owner !== 'Us') overlapMap[hex.associatedEpicId].add(owner)
+        })
+        if (hex.owner !== 'Us') {
+          overlapMap[hex.associatedEpicId].add(hex.owner)
+        }
+      }
     })
-    return counts
+
+    const overlaps: Record<string, import('./types').Owner[]> = {}
+    Object.entries(overlapMap).forEach(([epicId, set]) => {
+      overlaps[epicId] = Array.from(set) as import('./types').Owner[]
+    })
+
+    return { linkedHexCounts: counts, epicOverlaps: overlaps }
   }, [rawHexData])
 
   return (
@@ -70,6 +90,8 @@ export function App() {
             bounds={hexBounds}
             selectedHexId={selectedHexId}
             selectedEpicId={selectedEpicId}
+            showOverlapOnly={showOverlapOnly}
+            onToggleOverlapOnly={toggleOverlapOnly}
             onSelectHex={selectHex}
             onClearSelection={clearSelection}
           />
@@ -87,6 +109,7 @@ export function App() {
             highlightedEpicId={highlightedEpicId}
             onSelectEpic={selectEpic}
             linkedHexCounts={linkedHexCounts}
+            epicOverlaps={epicOverlaps}
           />
         </section>
       </main>

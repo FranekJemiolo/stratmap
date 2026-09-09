@@ -8,7 +8,8 @@
     "associatedEpicId": "PROJ-101",
     "owner": "Us",
     "status": "Captured",
-    "confidence": "Confirmed"
+    "confidence": "Confirmed",
+    "overlappingOwners": ["Competitor A"]
   },
   {
     "hexId": "HEX-02",
@@ -30,7 +31,8 @@
     "associatedEpicId": "PROJ-102",
     "owner": "Us",
     "status": "Captured",
-    "confidence": "Confirmed"
+    "confidence": "Confirmed",
+    "overlappingOwners": ["Competitor A", "Competitor B"]
   },
   {
     "hexId": "HEX-04",
@@ -63,7 +65,8 @@
     "associatedEpicId": "PROJ-104",
     "owner": "Us",
     "status": "In Progress",
-    "confidence": "Confirmed"
+    "confidence": "Confirmed",
+    "overlappingOwners": ["Competitor A"]
   },
   {
     "hexId": "HEX-07",
@@ -74,7 +77,8 @@
     "associatedEpicId": "PROJ-104",
     "owner": "Competitor A",
     "status": "Captured",
-    "confidence": "Confirmed"
+    "confidence": "Confirmed",
+    "overlappingOwners": ["Us"]
   },
   {
     "hexId": "HEX-08",
@@ -107,7 +111,8 @@
     "associatedEpicId": "PROJ-105",
     "owner": "Us",
     "status": "In Progress",
-    "confidence": "Confirmed"
+    "confidence": "Confirmed",
+    "overlappingOwners": ["Competitor B"]
   },
   {
     "hexId": "HEX-11",
@@ -118,7 +123,8 @@
     "associatedEpicId": "PROJ-112",
     "owner": "Competitor B",
     "status": "Captured",
-    "confidence": "Confirmed"
+    "confidence": "Confirmed",
+    "overlappingOwners": ["Us"]
   },
   {
     "hexId": "HEX-12",
