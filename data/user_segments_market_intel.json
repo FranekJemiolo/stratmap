@@ -1,0 +1,233 @@
+[
+  {
+    "hexId": "SEG-01",
+    "label": "Fortune 500 Global Bank",
+    "q": 0,
+    "r": 0,
+    "clusterName": "Financial Services",
+    "associatedEpicId": "PROJ-101",
+    "owner": "Us",
+    "status": "Captured",
+    "confidence": "Confirmed"
+  },
+  {
+    "hexId": "SEG-02",
+    "label": "Tier-1 Retail Investment",
+    "q": 1,
+    "r": -1,
+    "clusterName": "Financial Services",
+    "associatedEpicId": "PROJ-102",
+    "owner": "Us",
+    "status": "Captured",
+    "confidence": "Confirmed"
+  },
+  {
+    "hexId": "SEG-03",
+    "label": "FinTech Neobank Challenger",
+    "q": 0,
+    "r": 1,
+    "clusterName": "Financial Services",
+    "associatedEpicId": "PROJ-103",
+    "owner": "Competitor A",
+    "status": "Captured",
+    "confidence": "Confirmed"
+  },
+  {
+    "hexId": "SEG-04",
+    "label": "National Healthcare Network",
+    "q": -1,
+    "r": 1,
+    "clusterName": "Healthcare & Life Sciences",
+    "associatedEpicId": "PROJ-105",
+    "owner": "Us",
+    "status": "In Progress",
+    "confidence": "Confirmed"
+  },
+  {
+    "hexId": "SEG-05",
+    "label": "Pharma Clinical Trials",
+    "q": -1,
+    "r": 2,
+    "clusterName": "Healthcare & Life Sciences",
+    "associatedEpicId": "PROJ-112",
+    "owner": "Competitor B",
+    "status": "Captured",
+    "confidence": "Confirmed"
+  },
+  {
+    "hexId": "SEG-06",
+    "label": "Genomics Research Lab",
+    "q": -2,
+    "r": 2,
+    "clusterName": "Healthcare & Life Sciences",
+    "associatedEpicId": "PROJ-113",
+    "owner": "Competitor B",
+    "status": "In Progress",
+    "confidence": "Rumored"
+  },
+  {
+    "hexId": "SEG-07",
+    "label": "High-Frequency Trading Desk",
+    "q": 2,
+    "r": -1,
+    "clusterName": "Data-Intensive Scale",
+    "associatedEpicId": "PROJ-104",
+    "owner": "Us",
+    "status": "In Progress",
+    "confidence": "Confirmed"
+  },
+  {
+    "hexId": "SEG-08",
+    "label": "Global Ad-Tech Exchange",
+    "q": 2,
+    "r": 0,
+    "clusterName": "Data-Intensive Scale",
+    "associatedEpicId": "PROJ-110",
+    "owner": "Competitor A",
+    "status": "Captured",
+    "confidence": "Confirmed"
+  },
+  {
+    "hexId": "SEG-09",
+    "label": "Autonomous Fleet Telemetry",
+    "q": 3,
+    "r": -1,
+    "clusterName": "Data-Intensive Scale",
+    "associatedEpicId": "PROJ-109",
+    "owner": "Competitor A",
+    "status": "In Progress",
+    "confidence": "Rumored"
+  },
+  {
+    "hexId": "SEG-10",
+    "label": "Global SaaS Unicorns",
+    "q": -1,
+    "r": 0,
+    "clusterName": "Cloud-Native Tech",
+    "associatedEpicId": "PROJ-106",
+    "owner": "Us",
+    "status": "Captured",
+    "confidence": "Confirmed"
+  },
+  {
+    "hexId": "SEG-11",
+    "label": "Developer Tooling Platforms",
+    "q": -2,
+    "r": 0,
+    "clusterName": "Cloud-Native Tech",
+    "associatedEpicId": "PROJ-108",
+    "owner": "Us",
+    "status": "In Progress",
+    "confidence": "Confirmed"
+  },
+  {
+    "hexId": "SEG-12",
+    "label": "AI Inference Providers",
+    "q": 3,
+    "r": 0,
+    "clusterName": "Cloud-Native Tech",
+    "associatedEpicId": "PROJ-111",
+    "owner": "Competitor B",
+    "status": "In Progress",
+    "confidence": "Rumored"
+  },
+  {
+    "hexId": "SEG-13",
+    "label": "Defense & Gov Systems",
+    "q": -2,
+    "r": 1,
+    "clusterName": "Public Sector",
+    "associatedEpicId": "PROJ-106",
+    "owner": "Us",
+    "status": "Captured",
+    "confidence": "Rumored"
+  },
+  {
+    "hexId": "SEG-14",
+    "label": "Federal Agency Data Lake",
+    "q": -3,
+    "r": 2,
+    "clusterName": "Public Sector",
+    "associatedEpicId": "PROJ-114",
+    "owner": "Competitor A",
+    "status": "In Progress",
+    "confidence": "Rumored"
+  },
+  {
+    "hexId": "SEG-15",
+    "label": "EU Public Health Body",
+    "q": -2,
+    "r": 3,
+    "clusterName": "Public Sector",
+    "associatedEpicId": "PROJ-113",
+    "owner": "Competitor B",
+    "status": "Captured",
+    "confidence": "Confirmed"
+  },
+  {
+    "hexId": "SEG-16",
+    "label": "Telco 5G Core Operators",
+    "q": 2,
+    "r": 1,
+    "clusterName": "Telecommunications",
+    "associatedEpicId": "PROJ-118",
+    "owner": "Competitor A",
+    "status": "In Progress",
+    "confidence": "Rumored"
+  },
+  {
+    "hexId": "SEG-17",
+    "label": "Satellite Internet Network",
+    "q": 3,
+    "r": 1,
+    "clusterName": "Telecommunications",
+    "associatedEpicId": "PROJ-118",
+    "owner": "Competitor B",
+    "status": "In Progress",
+    "confidence": "Rumored"
+  },
+  {
+    "hexId": "SEG-18",
+    "label": "Connected Connected IoT Mesh",
+    "q": 4,
+    "r": 0,
+    "clusterName": "Telecommunications",
+    "associatedEpicId": "PROJ-109",
+    "owner": "Us",
+    "status": "In Progress",
+    "confidence": "Confirmed"
+  },
+  {
+    "hexId": "SEG-19",
+    "label": "Global eCommerce Giant",
+    "q": -3,
+    "r": 1,
+    "clusterName": "Consumer Retail",
+    "associatedEpicId": "PROJ-115",
+    "owner": "Competitor A",
+    "status": "Captured",
+    "confidence": "Confirmed"
+  },
+  {
+    "hexId": "SEG-20",
+    "label": "Omnichannel Logistics",
+    "q": 4,
+    "r": -1,
+    "clusterName": "Consumer Retail",
+    "associatedEpicId": "PROJ-116",
+    "owner": "Competitor A",
+    "status": "In Progress",
+    "confidence": "Rumored"
+  },
+  {
+    "hexId": "SEG-21",
+    "label": "C-Suite Analytics Office",
+    "q": 4,
+    "r": 1,
+    "clusterName": "Executive BI",
+    "associatedEpicId": "PROJ-117",
+    "owner": "Competitor B",
+    "status": "In Progress",
+    "confidence": "Rumored"
+  }
+]

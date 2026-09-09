@@ -1,0 +1,146 @@
+[
+  {
+    "id": "PROJ-101",
+    "label": "Core Identity & Auth System",
+    "progress": 100,
+    "status": "Done",
+    "blocks": ["PROJ-102", "PROJ-103"],
+    "accelerates": ["PROJ-104"]
+  },
+  {
+    "id": "PROJ-102",
+    "label": "Role-Based Access Control (RBAC)",
+    "progress": 100,
+    "status": "Done",
+    "blocks": ["PROJ-105", "PROJ-106"],
+    "accelerates": []
+  },
+  {
+    "id": "PROJ-103",
+    "label": "Enterprise SSO & SAML 2.0",
+    "progress": 100,
+    "status": "Done",
+    "blocks": ["PROJ-107"],
+    "accelerates": ["PROJ-108"]
+  },
+  {
+    "id": "PROJ-104",
+    "label": "Unified Event Pipeline",
+    "progress": 85,
+    "status": "In Progress",
+    "blocks": ["PROJ-109", "PROJ-110"],
+    "accelerates": ["PROJ-111"]
+  },
+  {
+    "id": "PROJ-105",
+    "label": "Granular Audit Trail Engine",
+    "progress": 70,
+    "status": "In Progress",
+    "blocks": ["PROJ-112"],
+    "accelerates": []
+  },
+  {
+    "id": "PROJ-106",
+    "label": "Multi-Tenant Isolation Architecture",
+    "progress": 100,
+    "status": "Done",
+    "blocks": ["PROJ-113"],
+    "accelerates": ["PROJ-114"]
+  },
+  {
+    "id": "PROJ-107",
+    "label": "Directory Sync & SCIM Protocol",
+    "progress": 45,
+    "status": "In Progress",
+    "blocks": [],
+    "accelerates": ["PROJ-112"]
+  },
+  {
+    "id": "PROJ-108",
+    "label": "Customer Self-Serve Portal",
+    "progress": 60,
+    "status": "In Progress",
+    "blocks": ["PROJ-115"],
+    "accelerates": []
+  },
+  {
+    "id": "PROJ-109",
+    "label": "Real-Time Telemetry Ingestion",
+    "progress": 30,
+    "status": "In Progress",
+    "blocks": ["PROJ-116"],
+    "accelerates": ["PROJ-117"]
+  },
+  {
+    "id": "PROJ-110",
+    "label": "Stream Processing & Deduplication",
+    "progress": 20,
+    "status": "In Progress",
+    "blocks": ["PROJ-116"],
+    "accelerates": []
+  },
+  {
+    "id": "PROJ-111",
+    "label": "Predictive AI Anomaly Detection",
+    "progress": 0,
+    "status": "To Do",
+    "blocks": ["PROJ-118"],
+    "accelerates": []
+  },
+  {
+    "id": "PROJ-112",
+    "label": "Automated SOC2 / ISO Evidence Collector",
+    "progress": 15,
+    "status": "In Progress",
+    "blocks": [],
+    "accelerates": []
+  },
+  {
+    "id": "PROJ-113",
+    "label": "Cross-Region Data Residency Vaults",
+    "progress": 10,
+    "status": "In Progress",
+    "blocks": ["PROJ-118"],
+    "accelerates": []
+  },
+  {
+    "id": "PROJ-114",
+    "label": "BYOK Key Management & Envelope Encryption",
+    "progress": 0,
+    "status": "To Do",
+    "blocks": [],
+    "accelerates": []
+  },
+  {
+    "id": "PROJ-115",
+    "label": "Usage-Based Billing & Metering Engine",
+    "progress": 0,
+    "status": "To Do",
+    "blocks": [],
+    "accelerates": []
+  },
+  {
+    "id": "PROJ-116",
+    "label": "Distributed OLAP Analytical Query Layer",
+    "progress": 0,
+    "status": "To Do",
+    "blocks": [],
+    "accelerates": []
+  },
+  {
+    "id": "PROJ-117",
+    "label": "Executive Strategic Scorecards & BI",
+    "progress": 0,
+    "status": "To Do",
+    "blocks": [],
+    "accelerates": []
+  },
+  {
+    "id": "PROJ-118",
+    "label": "Global Multi-Cloud Federation Mesh",
+    "progress": 0,
+    "status": "To Do",
+    "blocks": [],
+    "accelerates": []
+  }
+]
