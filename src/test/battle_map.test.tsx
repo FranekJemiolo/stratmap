@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { HexTileComponent } from '../components/battle-map/HexTileComponent'
+import { BattleMapPane } from '../components/battle-map/BattleMapPane'
 import { calculateHexLayout } from '../utils/parsers'
 import type { RawHexTile } from '../types'
 
@@ -134,3 +135,50 @@ describe('HexTileComponent & Battle Map Logic', () => {
     expect(group.getAttribute('opacity')).toBe('0.22')
   })
 })
+
+describe('BattleMapPane Component', () => {
+  it('renders battle map container, controls, and breakdown counts', () => {
+    const { tiles, bounds } = calculateHexLayout([mockConfirmedHex, mockRumoredHex])
+    const handleSelectHex = vi.fn()
+    const handleClearSelection = vi.fn()
+
+    render(
+      <BattleMapPane
+        tiles={tiles}
+        bounds={bounds}
+        selectedHexId={null}
+        selectedEpicId={null}
+        onSelectHex={handleSelectHex}
+        onClearSelection={handleClearSelection}
+      />
+    )
+
+    expect(screen.getByText('Competitive Battle Map')).toBeInTheDocument()
+    expect(screen.getByText(/2 Market Sectors/i)).toBeInTheDocument()
+    expect(screen.getByText(/1 in Fog of War/i)).toBeInTheDocument()
+
+    // Test Zoom controls
+    const zoomInBtn = screen.getByLabelText('Zoom In')
+    const zoomOutBtn = screen.getByLabelText('Zoom Out')
+    const resetBtn = screen.getByLabelText('Reset View')
+
+    expect(zoomInBtn).toBeInTheDocument()
+    expect(zoomOutBtn).toBeInTheDocument()
+    expect(resetBtn).toBeInTheDocument()
+
+    fireEvent.click(zoomInBtn)
+    fireEvent.click(zoomOutBtn)
+    fireEvent.click(resetBtn)
+
+    // Test Hex Click
+    const hexTile = screen.getByTestId('hex-tile-HEX-01')
+    fireEvent.click(hexTile)
+    expect(handleSelectHex).toHaveBeenCalledWith('HEX-01', 'PROJ-101')
+
+    // Test Canvas background click to clear
+    const container = screen.getByTestId('battle-map-container')
+    fireEvent.click(container)
+    expect(handleClearSelection).toHaveBeenCalledTimes(1)
+  })
+})
+

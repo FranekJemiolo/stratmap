@@ -256,7 +256,10 @@ export const BattleMapPane: React.FC<BattleMapPaneProps> = ({
         </svg>
 
         {/* Floating Zoom & Controls Overlay */}
-        <div className="absolute bottom-4 right-4 flex flex-col gap-1.5 bg-slate-800/90 backdrop-blur-md p-1.5 rounded-lg border border-slate-700/80 shadow-lg z-20">
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="absolute bottom-4 right-4 flex flex-col gap-1.5 bg-slate-800/90 backdrop-blur-md p-1.5 rounded-lg border border-slate-700/80 shadow-lg z-20"
+        >
           <button
             type="button"
             onClick={zoomIn}
